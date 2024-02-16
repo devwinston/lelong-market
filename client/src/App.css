@@ -1,0 +1,661 @@
+@import url("https://fonts.googleapis.com/css2?family=Fira+Sans+Extra+Condensed:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
+* {
+  /* border: 1px solid red; */
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Fira Sans Extra Condensed", sans-serif;
+}
+
+.app {
+  display: grid;
+  grid-template-columns: 7fr 33fr;
+  grid-template-rows: 1fr;
+  width: 1100px;
+  min-height: 800px;
+  margin: 25px auto;
+}
+
+.page {
+  border: 5px solid beige;
+  border-radius: 0 15px 15px 0;
+  padding: 20px;
+}
+
+.nav {
+  padding: 20px;
+  background: beige;
+  border: 5px solid beige;
+  border-right: none;
+  border-radius: 15px 0 0 15px;
+}
+
+.logo {
+  width: 100%;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.links a {
+  color: darkslategrey;
+  font-size: 1.3rem;
+  font-weight: bold;
+  text-decoration: none;
+  text-align: center;
+  width: 100%;
+  padding: 10px 20px;
+  border-radius: 5px;
+  margin-bottom: 5px;
+}
+
+.links a:hover {
+  background: darkslategrey;
+  color: white;
+}
+
+button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: orange;
+  color: white;
+  font-size: 1.3rem;
+  font-weight: bold;
+  text-decoration: none;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button svg {
+  margin-right: 8px;
+}
+
+button:hover {
+  background: darkslategrey;
+}
+
+.menu button {
+  width: 100%;
+}
+
+.sell-button {
+  background: red;
+  margin-bottom: 5px;
+}
+
+h1 {
+  color: darkslategrey;
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+h2 {
+  color: darkslategrey;
+  margin: 10px 0;
+}
+
+h3 {
+  color: darkslategrey;
+}
+
+p {
+  color: darkslategrey;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.register input {
+  width: 300px;
+}
+
+.form-text {
+  color: orange;
+  font-size: 1.1rem;
+  text-decoration: underline;
+  cursor: pointer;
+  margin-top: 15px;
+}
+
+.form-text:hover {
+  color: darkslategrey;
+}
+
+.error-text {
+  margin: 10px 0;
+  padding: 5px;
+  color: red;
+  border: 1px solid red;
+}
+
+input,
+textarea,
+select {
+  width: 400px;
+  padding: 8px;
+  font-size: 1.1rem;
+  border: 1px solid grey;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+input::-webkit-file-upload-button {
+  display: none;
+}
+
+textarea {
+  height: 200px;
+  resize: none;
+}
+
+form button {
+  margin-top: 30px;
+}
+
+table {
+  width: 100%;
+  table-layout: auto;
+  color: darkslategrey;
+  border: 3px solid lightgrey;
+}
+
+th,
+td {
+  padding: 5px 10px;
+  text-align: center;
+}
+
+th {
+  background: beige;
+}
+
+tr {
+  background: aliceblue;
+}
+
+.eye-icon {
+  cursor: pointer;
+}
+
+.listing table {
+  margin: 15px 0;
+}
+
+.listing table th {
+  width: 150px;
+}
+
+.change-button {
+  margin: 10px 0;
+}
+
+.avatar {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  border: 3px solid grey;
+  border-radius: 50%;
+  margin: 10px 0;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.edit-avatar {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  bottom: 0;
+  right: 0;
+  background: orange;
+  color: white;
+  padding: 5px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.edit-avatar:hover {
+  background: darkslategrey;
+}
+
+.avatar input {
+  display: none;
+}
+
+.image {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 500px;
+  margin: 15px 0;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 15px;
+}
+
+.add-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: grey;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.add-image svg {
+  margin-right: 8px;
+}
+
+.listing-sold {
+  color: red;
+  font-size: 3rem;
+  font-weight: bold;
+  padding: 10px 20px;
+  border: 5px solid red;
+  border-radius: 5px;
+}
+
+.edit-image,
+.delete-image {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 10px;
+  right: 10px;
+  background: orange;
+  color: white;
+  padding: 5px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.delete-image {
+  right: 45px;
+}
+
+.edit-image:hover,
+.delete-image:hover {
+  background: darkslategrey;
+}
+
+.image input {
+  display: none;
+}
+
+.prev-image,
+.next-image {
+  position: absolute;
+  font-size: 3rem;
+  padding: 8px;
+}
+
+.prev-image {
+  left: 15px;
+}
+
+.next-image {
+  right: 15px;
+}
+
+.button-group {
+  display: flex;
+}
+
+.button-group button {
+  margin-right: 10px;
+}
+
+.sold-button,
+.offer-button {
+  background: red;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 1;
+}
+
+.modal {
+  position: fixed;
+  top: 200px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 350px;
+  padding: 30px;
+  background: white;
+  border-radius: 15px;
+  border: 3px solid lightgrey;
+  z-index: 2;
+}
+
+.modal input {
+  width: 100%;
+}
+
+.close-icon {
+  position: fixed;
+  top: 10px;
+  right: 15px;
+  color: orange;
+  cursor: pointer;
+}
+
+.close-icon:hover {
+  color: darkslategrey;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: auto;
+  gap: 10px;
+}
+
+.card {
+  padding: 10px;
+  border: 1px solid lightgrey;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+}
+
+.card-user {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+
+.card-avatar {
+  border: 1px solid grey;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  margin-right: 10px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.card-title {
+  width: 248px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-username {
+  color: darkslategrey;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.card-username:hover {
+  text-decoration: underline;
+}
+
+.card-image {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 5px;
+}
+
+.card-image {
+  margin: 8px 0;
+}
+
+.card-sold {
+  color: red;
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding: 5px 10px;
+  border: 3px solid red;
+  border-radius: 3px;
+}
+
+.card-title {
+  margin: 8px 0;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.card-price {
+  font-size: 1.2rem;
+}
+
+.chat h2 {
+  margin: 0;
+  margin-bottom: 10px;
+}
+
+.chat-grid {
+  display: grid;
+  grid-template-columns: 9fr 11fr;
+  grid-template-rows: 1fr;
+  gap: 20px;
+  height: 697px;
+}
+
+.chat-conversations,
+.chat-messages {
+  display: flex;
+  flex-direction: column;
+  overflow-y: hidden;
+}
+
+.chat-conversations {
+  padding-right: 20px;
+  border-right: 1px solid lightgrey;
+}
+
+.conversation-cards {
+  overflow-y: scroll;
+  scrollbar-width: none;
+}
+
+.conversation-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 10px;
+  background: aliceblue;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.conversation-card:hover {
+  transform: translateY(-4px);
+}
+
+.conversation-receiver {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.receiver-avatar {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  border: 1px solid grey;
+  border-radius: 50%;
+  margin-right: 10px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.online-status {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.conversation-receiver h3,
+.conversation-listing p {
+  max-width: 130px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.message-group {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+
+.message-image {
+  height: 90px;
+  width: 90px;
+  margin-right: 15px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border: 1px solid grey;
+  border-radius: 5px;
+}
+
+.message-title {
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.message-title a {
+  text-decoration: none;
+  color: darkslategrey;
+}
+
+.message-title a:hover {
+  text-decoration: underline;
+}
+
+.message-username {
+  font-size: 1rem;
+}
+
+.message-text {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+
+.message-text p {
+  max-width: 70%;
+  padding: 10px 15px;
+  background: lightpink;
+  border-radius: 20px 20px 20px 0;
+}
+
+.message-created {
+  font-size: 0.8rem;
+  margin-bottom: 5px;
+}
+
+.message-text.message-right {
+  justify-content: end;
+}
+
+.message-text.message-right p {
+  background: lightblue;
+  border-radius: 20px 20px 0 20px;
+}
+
+.message-created.message-right {
+  text-align: right;
+}
+
+.messages-middle {
+  flex: 1;
+  overflow-y: scroll;
+  scrollbar-width: none;
+  margin: 10px 0;
+}
+
+.messages-bottom {
+  display: flex;
+}
+
+.messages-bottom input {
+  width: 100%;
+  margin-right: 10px;
+}
+
+.messages-bottom button {
+  padding: 10px;
+}
+
+.messages-bottom svg {
+  margin: 0;
+}
+
+.spinner-container {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.spinner {
+  width: 64px;
+  height: 64px;
+  border: 8px solid;
+  border-color: orange transparent orange transparent;
+  border-radius: 50%;
+  animation: spin 1.2s linear infinite;
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
