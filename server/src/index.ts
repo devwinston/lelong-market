@@ -1,6 +1,6 @@
+import path from "path";
 import express, { Request, Response, NextFunction } from "express";
 import cors from "cors";
-import pg from "pg";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -9,6 +9,12 @@ import pool from "./db";
 import userRoutes from "./routes/userRoutes";
 import listingRoutes from "./routes/listingRoutes";
 import messageRoutes from "./routes/messageRoutes";
+
+// variables
+const port = process.env.PORT || 4000;
+const __path = path.resolve();
+// const mode = "production";
+const mode = "deployment";
 
 // middleware
 app.use(cors());
@@ -24,6 +30,14 @@ app.use("/api/users", userRoutes);
 app.use("/api/listings", listingRoutes);
 app.use("/api/messages", messageRoutes);
 
+// static files (for deployment)
+if (mode === "deployment") {
+  app.use(express.static(path.join(__path, "/client/build")));
+  app.get("*", (req, res) =>
+    res.sendFile(path.resolve(__path, "client", "build", "index.html"))
+  );
+}
+
 // errors
 app.use((req, res, next) => {
   next(new Error("Endpoint not found"));
@@ -34,8 +48,6 @@ app.use((err: unknown, req: Request, res: Response, next: NextFunction) => {
 });
 
 // listen
-const port = process.env.PORT || 4000;
-
 pool.connect((error) => {
   if (error) throw new Error("Unable to connect to PostgreSQL database");
   console.log("Connected to PostgreSQL database");
