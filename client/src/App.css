@@ -493,7 +493,7 @@ tr {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
+  margin: 10px 0;
   padding: 10px;
   background: aliceblue;
   border-radius: 5px;
