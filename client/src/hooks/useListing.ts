@@ -18,11 +18,29 @@ export const useGetListings = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const getListings = async (): Promise<ViewListingModel[]> => {
+  const getListings = async ({
+    search,
+    price,
+    category,
+    sold,
+    page,
+    pages,
+    size,
+  }: {
+    search: string;
+    price: string;
+    category: string;
+    sold: string;
+    page: number;
+    pages: number;
+    size: number;
+  }): Promise<ViewListingModel[]> => {
     setLoading(true);
     setError("");
 
-    const response = await fetch(`/api/listings`);
+    const response = await fetch(
+      `/api/listings?search=${search}&price=${price}&category=${category}&sold=${sold}&page=${page}&pages=${pages}&size=${size}`
+    );
 
     const json = await response.json();
 

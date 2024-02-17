@@ -6,6 +6,7 @@
   padding: 0;
   box-sizing: border-box;
   font-family: "Fira Sans Extra Condensed", sans-serif;
+  scrollbar-width: none;
 }
 
 .app {
@@ -486,7 +487,6 @@ tr {
 
 .conversation-cards {
   overflow-y: scroll;
-  scrollbar-width: none;
 }
 
 .conversation-card {
@@ -538,6 +538,10 @@ tr {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.conversation-listing p {
+  text-align: right;
 }
 
 .message-group {
@@ -609,7 +613,6 @@ tr {
 .messages-middle {
   flex: 1;
   overflow-y: scroll;
-  scrollbar-width: none;
   margin: 10px 0;
 }
 
@@ -628,6 +631,31 @@ tr {
 
 .messages-bottom svg {
   margin: 0;
+}
+
+.search-group,
+.page-group,
+.query-group {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.search-input {
+  margin-right: 10px;
+}
+
+.page-button,
+.more-button {
+  padding: 5px 10px;
+  margin-right: 5px;
+}
+
+.query-group {
+  justify-content: space-between;
+}
+
+.query-group select {
+  width: 280px;
 }
 
 .spinner-container {

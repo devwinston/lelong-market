@@ -298,7 +298,7 @@ const Chat = () => {
               <button
                 onClick={handleSend}
                 style={{
-                  background: sendLoading ? "grey" : "dodgerblue",
+                  background: sendLoading ? "grey" : "orange",
                 }}
                 disabled={sendLoading}
               >
