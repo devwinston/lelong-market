@@ -8,6 +8,6 @@ Carousell-inspired marketplace to buy and sell products.
 - Create, read, update, or delete user listings with image upload support.
 - Paginated market listings with search, sort, and filter functions.
 
-[Live Site](https:/lelong-market.onrender.com)
+[Live Site](https://lelong-market.onrender.com)
 
 [![My Skills](https://skillicons.dev/icons?i=react,nodejs,express,postgres)](https://skillicons.dev)
