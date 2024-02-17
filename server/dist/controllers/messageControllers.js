@@ -121,7 +121,7 @@ exports.getMessages = getMessages;
 const getConversations = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const senderUid = req.uid;
     try {
-        const q = "SELECT * FROM conversations WHERE $1 = ANY(uids)";
+        const q = "SELECT * FROM conversations WHERE $1 = ANY(uids) ORDER BY updated DESC";
         const v = [senderUid];
         const result = yield db_1.default.query(q, v);
         const conversations = result.rows;

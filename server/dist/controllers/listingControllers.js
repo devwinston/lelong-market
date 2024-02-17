@@ -50,15 +50,72 @@ const addListing = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 });
 exports.addListing = addListing;
 // @desc get listings
-// @route GET /api/listings
+// @route GET /api/listings?<query>=<value>&
 // @access public
 const getListings = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    // e.g. /?filters=price,category
-    // const filters = req.query.filters; // @TODO filters
-    // console.log(filters);
+    const search = req.query.search;
+    const price = req.query.price;
+    const category = req.query.category;
+    const sold = req.query.sold;
+    const page = req.query.page;
+    const pages = req.query.pages;
+    const size = req.query.size;
     try {
-        const q = "SELECT * FROM listings ORDER BY updated DESC LIMIT 20";
-        const result = yield db_1.default.query(q);
+        let q = `
+    SELECT *
+    FROM listings`;
+        let v = [];
+        // search
+        if (search) {
+            const keywords = search
+                .split(/[ ,]+/)
+                .map((keyword) => keyword.trim());
+            const placeholders = keywords
+                .map((_, index) => `$${index + 1}`)
+                .join(", ");
+            const matches = keywords.map((keyword) => `%${keyword}%`);
+            q += `
+      WHERE (username ILIKE ANY(ARRAY[${placeholders}])
+      OR title ILIKE ANY(ARRAY[${placeholders}]))`;
+            v.push(...matches);
+        }
+        // filter
+        if (category) {
+            if (v.length > 0)
+                q += `
+      AND category = $${v.length + 1}`;
+            else
+                q += `
+      WHERE category = $1`;
+            v.push(category);
+        }
+        if (sold) {
+            const soldValue = sold === "True" ? "TRUE" : "FALSE";
+            if (v.length > 0)
+                q += `
+      AND sold = $${v.length + 1}`;
+            else
+                q += `
+      WHERE sold = $1`;
+            v.push(soldValue);
+        }
+        // sort
+        if (price) {
+            const priceValue = price === "High" ? "DESC" : "ASC";
+            q += `
+      ORDER BY price ${priceValue}, updated DESC`;
+        }
+        else {
+            q += `
+      ORDER BY updated DESC`;
+        }
+        q += `
+    OFFSET (($${v.length + 1} - 1) * $${v.length + 3})
+    LIMIT ($${v.length + 2} * $${v.length + 3})`;
+        v.push(page, pages, size);
+        console.log("q: ", q);
+        console.log("v: ", v);
+        const result = yield db_1.default.query(q, v);
         const listings = result.rows;
         res.status(200).json(listings);
     }

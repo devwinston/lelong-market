@@ -158,7 +158,8 @@ const getConversations = async (req: PrivateRequest, res: Response) => {
   const senderUid = req.uid;
 
   try {
-    const q = "SELECT * FROM conversations WHERE $1 = ANY(uids)";
+    const q =
+      "SELECT * FROM conversations WHERE $1 = ANY(uids) ORDER BY updated DESC";
     const v = [senderUid];
 
     const result = await pool.query(q, v);
