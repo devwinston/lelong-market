@@ -146,9 +146,6 @@ const getListings = async (req: Request, res: Response) => {
 
     v.push(page, pages, size);
 
-    console.log("q: ", q);
-    console.log("v: ", v);
-
     const result = await pool.query(q, v);
     const listings = result.rows;
 

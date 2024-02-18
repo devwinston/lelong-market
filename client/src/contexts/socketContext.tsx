@@ -9,7 +9,7 @@ import io, { Socket } from "socket.io-client";
 
 import { AuthContext } from "./authContext";
 
-// context type
+// context types
 
 interface StateType {
   socket: Socket | null;

@@ -1,10 +1,4 @@
-import {
-  createContext,
-  useReducer,
-  useEffect,
-  Dispatch,
-  ReactNode,
-} from "react";
+import { createContext, useReducer, Dispatch, ReactNode } from "react";
 
 import { UserModel } from "../models/UserModel";
 
@@ -37,7 +31,7 @@ export const AuthContext = createContext<{
   dispatch: Dispatch<ActionType>;
 }>({
   state: initialState,
-  dispatch: () => null,
+  dispatch: () => {},
 });
 
 // +-----------------+
