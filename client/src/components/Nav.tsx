@@ -17,25 +17,47 @@ const Nav = () => {
 
   return (
     <div className="nav">
-      {/* <img src={Logo} alt="logo" className="logo" /> */}
+      <img src={Logo} alt="logo" className="logo" />
 
       <div className="menu">
         {auth.user && (
-          <button className="sell-button" onClick={() => navigate("/listing")}><MdSell />Sell</button>
+          <button className="sell-button" onClick={() => navigate("/listing")}>
+            <MdSell />
+            Sell
+          </button>
         )}
 
         <div className="links">
-          <NavLink to="/"><FaStore />Market</NavLink>
-          {auth.user && <NavLink to={"/chat"}><IoChatbubbleEllipsesSharp />Chat</NavLink>}
+          <NavLink to="/">
+            <FaStore />
+            Market
+          </NavLink>
           {auth.user && (
-            <NavLink to={`/profile/${auth.user.uid}`}><FaUser />Profile</NavLink>
+            <NavLink to={"/chat"}>
+              <IoChatbubbleEllipsesSharp />
+              Chat
+            </NavLink>
+          )}
+          {auth.user && (
+            <NavLink to={`/profile/${auth.user.uid}`}>
+              <FaUser />
+              Profile
+            </NavLink>
           )}
         </div>
 
         {!auth.user && (
-          <button onClick={() => navigate("/register")}><FaSignInAlt />Register</button>
+          <button onClick={() => navigate("/register")}>
+            <FaSignInAlt />
+            Register
+          </button>
         )}
-        {auth.user && <button onClick={signout}><FaSignOutAlt />Sign Out</button>}
+        {auth.user && (
+          <button onClick={signout}>
+            <FaSignOutAlt />
+            Sign Out
+          </button>
+        )}
       </div>
     </div>
   );
