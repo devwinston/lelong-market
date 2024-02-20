@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { IoSend } from "react-icons/io5";
+import { IoChatbubbleEllipsesSharp, IoSend } from "react-icons/io5";
 import { FaHourglassEnd } from "react-icons/fa";
 
 import { AuthContext } from "../contexts/authContext";
@@ -154,7 +154,7 @@ const Chat = () => {
 
   return (
     <div className="chat">
-      <h1>Chat</h1>
+      <h1><IoChatbubbleEllipsesSharp />Chat</h1>
 
       <div className="chat-grid">
         <div className="chat-conversations">

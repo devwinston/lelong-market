@@ -6,7 +6,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { FaSearch } from "react-icons/fa";
+import { FaStore, FaSearch } from "react-icons/fa";
 
 import { ListingContext } from "../contexts/listingContext";
 import { useGetListings } from "../hooks/useListing";
@@ -137,7 +137,7 @@ const Market = () => {
 
   return (
     <div className="market">
-      <h1>Market</h1>
+      <h1><FaStore />Market</h1>
       <div className="search-group">
         <input
           className="search-input"

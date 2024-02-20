@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { FaEdit, FaEye, FaKey } from "react-icons/fa";
+import { FaUser, FaEdit, FaEye, FaKey } from "react-icons/fa";
 
 import { storage } from "../config/firebase.config";
 import { AuthContext } from "../contexts/authContext";
@@ -137,7 +137,7 @@ const Profile = () => {
 
   return (
     <div className="profile">
-      <h1>Profile</h1>
+      <h1><FaUser />Profile</h1>
 
       <h2>Profile Details</h2>
       {profile.uid && (

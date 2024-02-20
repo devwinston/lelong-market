@@ -1,5 +1,6 @@
 import React, { ChangeEvent, FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { MdSell } from "react-icons/md";
 
 import { useAddListing } from "../hooks/useListing";
 import { checkFiles } from "../utilities/checkFiles";
@@ -82,7 +83,7 @@ const AddListing = () => {
 
   return (
     <div className="add-listing">
-      <h1>Add Listing</h1>
+      <h1><MdSell />Add Listing</h1>
 
       <form onSubmit={handleSubmit}>
         <h2>Title</h2>
@@ -143,7 +144,7 @@ const AddListing = () => {
           required
         />
 
-        <button type="submit">Add Listing</button>
+        <button type="submit"><MdSell />Add Listing</button>
       </form>
 
       {error && <p className="error-text">Add Listing Error: {error}</p>}

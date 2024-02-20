@@ -1,5 +1,7 @@
 import React, { ChangeEvent, FormEvent, useState } from "react";
 import { toast } from "react-toastify";
+import { FaSignInAlt } from "react-icons/fa";
+import { MdLockReset } from "react-icons/md";
 
 import { useSignup, useSignin, useResetUser } from "../hooks/useAuth";
 
@@ -56,7 +58,7 @@ const Register = () => {
 
   return (
     <div className="register">
-      <h1>Register</h1>
+      <h1><FaSignInAlt />Register</h1>
 
       <form onSubmit={handleSubmit}>
         {register && (
@@ -99,7 +101,7 @@ const Register = () => {
 
         {register && (
           <>
-            <button type="submit">Sign Up</button>
+            <button type="submit"><FaSignInAlt />Sign Up</button>
             <p className="form-text" onClick={() => setRegister(false)}>
               Sign In Instead
             </p>
@@ -110,7 +112,7 @@ const Register = () => {
           <>
             {!reset && (
               <>
-                <button type="submit">Sign In</button>
+                <button type="submit"><FaSignInAlt />Sign In</button>
                 <p className="form-text" onClick={() => setRegister(true)}>
                   Sign Up Instead
                 </p>
@@ -122,7 +124,7 @@ const Register = () => {
 
             {reset && (
               <>
-                <button type="submit">Reset Password</button>
+                <button type="submit"><MdLockReset />Reset Password</button>
                 <p className="form-text" onClick={() => setReset(false)}>
                   Sign In Instead
                 </p>

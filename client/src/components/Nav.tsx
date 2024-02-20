@@ -1,5 +1,8 @@
 import React, { useContext, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+import { FaStore, FaUser, FaSignInAlt, FaSignOutAlt } from "react-icons/fa";
+import { MdSell } from "react-icons/md";
+import { IoChatbubbleEllipsesSharp } from "react-icons/io5";
 
 import { AuthContext } from "../contexts/authContext";
 import { useSignout } from "../hooks/useAuth";
@@ -18,23 +21,21 @@ const Nav = () => {
 
       <div className="menu">
         {auth.user && (
-          <button className="sell-button" onClick={() => navigate("/listing")}>
-            Sell
-          </button>
+          <button className="sell-button" onClick={() => navigate("/listing")}><MdSell />Sell</button>
         )}
 
         <div className="links">
-          <NavLink to="/">Market</NavLink>
-          {auth.user && <NavLink to={"/chat"}>Chat</NavLink>}
+          <NavLink to="/"><FaStore />Market</NavLink>
+          {auth.user && <NavLink to={"/chat"}><IoChatbubbleEllipsesSharp />Chat</NavLink>}
           {auth.user && (
-            <NavLink to={`/profile/${auth.user.uid}`}>Profile</NavLink>
+            <NavLink to={`/profile/${auth.user.uid}`}><FaUser />Profile</NavLink>
           )}
         </div>
 
         {!auth.user && (
-          <button onClick={() => navigate("/register")}>Register</button>
+          <button onClick={() => navigate("/register")}><FaSignInAlt />Register</button>
         )}
-        {auth.user && <button onClick={signout}>Sign Out</button>}
+        {auth.user && <button onClick={signout}><FaSignOutAlt />Sign Out</button>}
       </div>
     </div>
   );
