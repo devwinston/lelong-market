@@ -64,6 +64,7 @@ const Profile = () => {
 
   useEffect(() => {
     setListings([]);
+    setNotifications([]);
 
     const getProfile = async () => {
       if (uid) {
@@ -86,17 +87,20 @@ const Profile = () => {
       }
     };
 
+    getProfile();
+    getProfileListings();
+    getProfileNotifications();
+  }, [navigate]);
+
+  useEffect(() => {
     const readProfileNotifications = async () => {
       if (uid) {
         await readUserNotifications(uid);
       }
     };
 
-    getProfile();
-    getProfileListings();
-    getProfileNotifications();
-    readProfileNotifications();
-  }, [navigate]);
+    if (notifications) readProfileNotifications();
+  }, [notifications]);
 
   const handleUploadAvatar = async (
     e: ChangeEvent<HTMLInputElement>
