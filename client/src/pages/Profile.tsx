@@ -99,7 +99,7 @@ const Profile = () => {
       }
     };
 
-    if (notifications) readProfileNotifications();
+    if (notifications.length > 0) readProfileNotifications();
   }, [notifications]);
 
   const handleUploadAvatar = async (
