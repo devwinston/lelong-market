@@ -147,7 +147,7 @@ const getMessages = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         const conversation = result.rows[0];
         if (conversation) {
             const mids = conversation.messages;
-            const q2 = "SELECT * FROM messages WHERE mid = ANY($1)";
+            const q2 = "SELECT * FROM messages WHERE mid = ANY($1) ORDER BY created";
             const v2 = [mids];
             const result = yield db_1.default.query(q2, v2);
             const messages = result.rows;

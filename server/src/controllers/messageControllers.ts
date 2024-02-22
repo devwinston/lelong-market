@@ -201,7 +201,7 @@ const getMessages = async (req: PrivateRequest, res: Response) => {
     if (conversation) {
       const mids = conversation.messages;
 
-      const q2 = "SELECT * FROM messages WHERE mid = ANY($1)";
+      const q2 = "SELECT * FROM messages WHERE mid = ANY($1) ORDER BY created";
       const v2 = [mids];
 
       const result = await pool.query(q2, v2);
