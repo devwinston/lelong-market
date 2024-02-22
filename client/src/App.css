@@ -667,6 +667,37 @@ tr {
   width: 280px;
 }
 
+.notifications {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+
+.notification-text {
+  display: flex;
+  align-items: center;
+  border: 1px solid lightgrey;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+.notification-text:nth-child(n + 2) {
+  margin-top: 5px;
+}
+
+.unread-notification {
+  background: aliceblue;
+}
+
+.unread-notification .unread-status {
+  display: block;
+  height: 10px;
+  width: 10px;
+  background: red;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
 .spinner-container {
   position: fixed;
   top: 0;

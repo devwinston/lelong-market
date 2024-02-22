@@ -12,7 +12,7 @@ interface Props {
 }
 
 const PasswordModal: FC<Props> = ({ uid, setShowModal }) => {
-  const [password, setPassword] = useState(""); // @TODO confirm old password
+  const [password, setPassword] = useState("");
   const { updateUser, loading, error } = useUpdateUser();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {

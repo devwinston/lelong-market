@@ -7,8 +7,13 @@ import { storage } from "../config/firebase.config";
 import { AuthContext } from "../contexts/authContext";
 import { useGetUser, useUpdateUser } from "../hooks/useAuth";
 import { useGetUserListings } from "../hooks/useListing";
+import {
+  useGetUserNotifications,
+  useReadUserNotifications,
+} from "../hooks/useNotification";
 import { GetUserModel } from "../models/UserModel";
 import { ViewListingModel } from "../models/ListingModel";
+import { ViewNotificationModel } from "../models/NotificationModel";
 import { checkFiles } from "../utilities/checkFiles";
 import { storeAvatar } from "../utilities/storeAvatar";
 import { getRelativeTime } from "../utilities/getRelativeTime";
@@ -29,6 +34,9 @@ const Profile = () => {
   const [showModal, setShowModal] = useState(false);
 
   const [listings, setListings] = useState<ViewListingModel[]>([]);
+  const [notifications, setNotifications] = useState<ViewNotificationModel[]>(
+    []
+  );
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -47,6 +55,12 @@ const Profile = () => {
     loading: getUserListingsLoading,
     error: getUserListingsError,
   } = useGetUserListings();
+  const {
+    getUserNotifications,
+    loading: getUserNotificationsLoading,
+    error: getUserNotificationsError,
+  } = useGetUserNotifications();
+  const { readUserNotifications } = useReadUserNotifications();
 
   useEffect(() => {
     setListings([]);
@@ -65,8 +79,23 @@ const Profile = () => {
       }
     };
 
+    const getProfileNotifications = async () => {
+      if (uid) {
+        const notifications = await getUserNotifications(uid);
+        if (notifications) setNotifications(notifications);
+      }
+    };
+
+    const readProfileNotifications = async () => {
+      if (uid) {
+        await readUserNotifications(uid);
+      }
+    };
+
     getProfile();
     getProfileListings();
+    getProfileNotifications();
+    readProfileNotifications();
   }, [navigate]);
 
   const handleUploadAvatar = async (
@@ -130,14 +159,18 @@ const Profile = () => {
     loading ||
     getUserLoading ||
     updateUserLoading ||
-    getUserListingsLoading
+    getUserListingsLoading ||
+    getUserNotificationsLoading
   ) {
     return <Spinner />;
   }
 
   return (
     <div className="profile">
-      <h1><FaUser />Profile</h1>
+      <h1>
+        <FaUser />
+        Profile
+      </h1>
 
       <h2>Profile Details</h2>
       {profile.uid && (
@@ -194,6 +227,55 @@ const Profile = () => {
         <p className="error-text">Update Error: {updateUserError}</p>
       )}
       {getUserError && <p className="error-text">User Error: {getUserError}</p>}
+
+      {auth.user && auth.user.uid === profile.uid && (
+        <>
+          <h2>Profile Notifications</h2>
+          <div className="notifications">
+            {notifications.length > 0
+              ? notifications.map((notification, index) =>
+                  notification.type === "offer" ? (
+                    <div
+                      key={index}
+                      className={`notification-text ${
+                        notification.unread && "unread-notification"
+                      }`}
+                    >
+                      <div className="unread-status"></div>
+                      <p>
+                        <strong>{notification.sender}</strong> made an offer for{" "}
+                        <strong>{notification.title}</strong> -{" "}
+                        <em>{getRelativeTime(notification.created)}</em>
+                      </p>
+                    </div>
+                  ) : (
+                    <div
+                      key={index}
+                      className={`notification-text ${
+                        notification.unread && "unread-notification"
+                      }`}
+                    >
+                      <div className="unread-status"></div>
+                      <p>
+                        <strong>{notification.sender}</strong> sent a message
+                        for <strong>{notification.title}</strong> -{" "}
+                        <em>{getRelativeTime(notification.created)}</em>
+                      </p>
+                    </div>
+                  )
+                )
+              : !getUserNotificationsLoading && (
+                  <p>No notifications available</p>
+                )}
+          </div>
+        </>
+      )}
+
+      {getUserNotificationsError && (
+        <p className="error-text">
+          Notifications Error: {getUserNotificationsError}
+        </p>
+      )}
 
       <h2>Profile Listings</h2>
       {listings.length > 0 ? (
