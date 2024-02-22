@@ -20,6 +20,7 @@ const sendMessage = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     const { pid, uid: receiverUid } = req.params;
     const { text } = req.body;
     const senderUid = req.uid;
+    const sender = req.username;
     try {
         // check if product exists
         const q1 = "SELECT * FROM listings WHERE pid = $1";
@@ -39,13 +40,32 @@ const sendMessage = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             const mid = (0, uuid_1.v4)();
             const q3 = "INSERT INTO messages (mid, sender, receiver, text, created) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP) RETURNING *";
             const v3 = [mid, senderUid, receiverUid, text];
-            const result = yield db_1.default.query(q3, v3);
+            let result = yield db_1.default.query(q3, v3);
             const message = result.rows[0];
             // create conversation
             const cid = (0, uuid_1.v4)();
             const q4 = "INSERT INTO conversations (cid, pid, uids, messages, updated) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP)";
             const v4 = [cid, pid, [senderUid, receiverUid], [mid]];
             yield db_1.default.query(q4, v4);
+            // send notification
+            const title = listing.title;
+            result = yield db_1.default.query("SELECT username FROM users WHERE uid = $1", [
+                receiverUid,
+            ]);
+            const receiver = result.rows[0].username;
+            const nid = (0, uuid_1.v4)();
+            const q5 = "INSERT INTO notifications (nid, pid, title, senderUid, sender, receiverUid, receiver, type, unread, created) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, TRUE, CURRENT_TIMESTAMP)";
+            const v5 = [
+                nid,
+                pid,
+                title,
+                senderUid,
+                sender,
+                receiverUid,
+                receiver,
+                "message",
+            ];
+            yield db_1.default.query(q5, v5);
             // socket.io
             const receiverSocket = (0, socket_1.getSocket)(receiverUid);
             if (receiverSocket) {
@@ -60,7 +80,7 @@ const sendMessage = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             const mid = (0, uuid_1.v4)();
             const q3 = "INSERT INTO messages (mid, sender, receiver, text, created) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP) RETURNING *";
             const v3 = [mid, senderUid, receiverUid, text];
-            const result = yield db_1.default.query(q3, v3);
+            let result = yield db_1.default.query(q3, v3);
             const message = result.rows[0];
             // add message to conversation
             const cid = conversation.cid;
@@ -69,6 +89,35 @@ const sendMessage = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             const q4 = "UPDATE conversations SET (messages, updated) = ($1, CURRENT_TIMESTAMP) WHERE cid = $2";
             const v4 = [messages, cid];
             yield db_1.default.query(q4, v4);
+            // send notification
+            const title = listing.title;
+            result = yield db_1.default.query("SELECT username FROM users WHERE uid = $1", [
+                receiverUid,
+            ]);
+            const receiver = result.rows[0].username;
+            // check if notification exists
+            result = yield db_1.default.query("SELECT nid FROM notifications WHERE pid = $1 AND senderUid = $2 AND receiverUid = $3 AND type = $4", [pid, senderUid, receiverUid, "message"]);
+            if (!result.rows[0]) {
+                const nid = (0, uuid_1.v4)();
+                const q5 = "INSERT INTO notifications (nid, pid, title, senderUid, sender, receiverUid, receiver, type, unread, created) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, TRUE, CURRENT_TIMESTAMP)";
+                const v5 = [
+                    nid,
+                    pid,
+                    title,
+                    senderUid,
+                    sender,
+                    receiverUid,
+                    receiver,
+                    "message",
+                ];
+                yield db_1.default.query(q5, v5);
+            }
+            else {
+                const nid = result.rows[0].nid;
+                const q5 = "UPDATE notifications SET (title, unread, created) = ($1, TRUE, CURRENT_TIMESTAMP) WHERE nid = $2";
+                const v5 = [title, nid];
+                yield db_1.default.query(q5, v5);
+            }
             // socket.io
             const receiverSocket = (0, socket_1.getSocket)(receiverUid);
             if (receiverSocket) {

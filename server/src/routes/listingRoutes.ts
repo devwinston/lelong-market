@@ -21,6 +21,5 @@ router
   .delete(protect, deleteListing)
   .patch(protect, updateListing);
 router.route("/:pid/offer").patch(protect, offerListing);
-// router.route("/:p") // @TODO pagination
 
 export default router;

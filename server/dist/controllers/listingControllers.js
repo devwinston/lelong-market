@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.offerListing = exports.updateListing = exports.deleteListing = exports.getListing = exports.getUserListings = exports.getListings = exports.addListing = void 0;
+const uuid_1 = require("uuid");
 const db_1 = __importDefault(require("../db"));
 const addListing = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { pid, title, description, price, category, images, } = req.body;
@@ -113,8 +114,6 @@ const getListings = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     OFFSET (($${v.length + 1} - 1) * $${v.length + 3})
     LIMIT ($${v.length + 2} * $${v.length + 3})`;
         v.push(page, pages, size);
-        console.log("q: ", q);
-        console.log("v: ", v);
         const result = yield db_1.default.query(q, v);
         const listings = result.rows;
         res.status(200).json(listings);
@@ -231,8 +230,8 @@ exports.updateListing = updateListing;
 const offerListing = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { pid } = req.params;
     const { offer } = req.body;
-    const uid = req.uid;
-    const username = req.username;
+    const senderUid = req.uid;
+    const sender = req.username;
     try {
         const q1 = "SELECT * FROM listings where pid = $1";
         const v1 = [pid];
@@ -240,18 +239,46 @@ const offerListing = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         let listing = result.rows[0];
         if (!listing)
             throw new Error("Listing does not exist");
-        if (listing.uid === uid)
+        if (listing.uid === senderUid)
             throw new Error("Offer not authorised");
         let offers = listing.offers;
         // check if user already made an offer
-        const index = offers.findIndex((offer) => offer.includes(uid));
-        if (index === -1)
-            offers.push(`${uid}/${username}/${offer}`);
-        else
-            offers[index] = `${uid}/${username}/${offer}`;
-        const q2 = "UPDATE listings SET offers = $1 WHERE pid = $2 RETURNING *";
-        const v2 = [offers, pid];
-        result = yield db_1.default.query(q2, v2);
+        const index = offers.findIndex((offer) => offer.includes(senderUid));
+        if (index === -1) {
+            offers.push(`${senderUid}/${sender}/${offer}`);
+            // send notification
+            const title = listing.title;
+            const receiverUid = listing.uid;
+            const receiver = listing.username;
+            const nid = (0, uuid_1.v4)();
+            const q2 = "INSERT INTO notifications (nid, pid, title, senderUid, sender, receiverUid, receiver, type, unread, created) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, TRUE, CURRENT_TIMESTAMP)";
+            const v2 = [
+                nid,
+                pid,
+                title,
+                senderUid,
+                sender,
+                receiverUid,
+                receiver,
+                "offer",
+            ];
+            yield db_1.default.query(q2, v2);
+        }
+        else {
+            offers[index] = `${senderUid}/${sender}/${offer}`;
+            // send notification
+            const title = listing.title;
+            const receiverUid = listing.uid;
+            const receiver = listing.username;
+            const result = yield db_1.default.query("SELECT nid FROM notifications WHERE pid = $1 AND senderUid = $2 AND receiverUid = $3 AND type = $4", [pid, senderUid, receiverUid, "offer"]);
+            const nid = result.rows[0].nid;
+            const q2 = "UPDATE notifications SET (title, unread, created) = ($1, TRUE, CURRENT_TIMESTAMP) WHERE nid = $2";
+            const v2 = [title, nid];
+            yield db_1.default.query(q2, v2);
+        }
+        const q3 = "UPDATE listings SET offers = $1 WHERE pid = $2 RETURNING *";
+        const v3 = [offers, pid];
+        result = yield db_1.default.query(q3, v3);
         listing = result.rows[0];
         res.status(200).json(listing);
     }

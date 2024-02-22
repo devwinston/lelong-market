@@ -9,6 +9,7 @@ import pool from "./db";
 import userRoutes from "./routes/userRoutes";
 import listingRoutes from "./routes/listingRoutes";
 import messageRoutes from "./routes/messageRoutes";
+import notificationRoutes from "./routes/notificationRoutes";
 
 // variables
 const port = process.env.PORT || 4000;
@@ -29,6 +30,7 @@ app.use((req, res, next) => {
 app.use("/api/users", userRoutes);
 app.use("/api/listings", listingRoutes);
 app.use("/api/messages", messageRoutes);
+app.use("/api/notifications", notificationRoutes);
 
 // static files (for deployment)
 if (mode === "deployment") {

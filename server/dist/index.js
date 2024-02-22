@@ -13,6 +13,7 @@ const db_1 = __importDefault(require("./db"));
 const userRoutes_1 = __importDefault(require("./routes/userRoutes"));
 const listingRoutes_1 = __importDefault(require("./routes/listingRoutes"));
 const messageRoutes_1 = __importDefault(require("./routes/messageRoutes"));
+const notificationRoutes_1 = __importDefault(require("./routes/notificationRoutes"));
 // variables
 const port = process.env.PORT || 4000;
 const __path = path_1.default.resolve();
@@ -29,6 +30,7 @@ socket_1.app.use((req, res, next) => {
 socket_1.app.use("/api/users", userRoutes_1.default);
 socket_1.app.use("/api/listings", listingRoutes_1.default);
 socket_1.app.use("/api/messages", messageRoutes_1.default);
+socket_1.app.use("/api/notifications", notificationRoutes_1.default);
 // static files (for deployment)
 if (mode === "deployment") {
     socket_1.app.use(express_1.default.static(path_1.default.join(__path, "/client/build")));

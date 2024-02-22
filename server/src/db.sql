@@ -37,3 +37,16 @@ CREATE TABLE messages (
   text VARCHAR(100) NOT NULL,
   created TIMESTAMP NOT NULL
 );
+
+CREATE TABLE notifications (
+  nid TEXT NOT NULL,
+  pid TEXT NOT NULL,
+  title TEXT NOT NULL,
+  sender TEXT NOT NULL,
+  senderUid TEXT NOT NULL,
+  receiver TEXT NOT NULL,
+  receiverUid TEXT NOT NULL,
+  type TEXT NOT NULL,
+  unread BOOLEAN NOT NULL,
+  created TIMESTAMP NOT NULL
+);

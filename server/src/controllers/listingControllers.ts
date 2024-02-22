@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { v4 as uuidv4 } from "uuid";
 
 import pool from "../db";
 import { PrivateRequest } from "../models/RequestModel";
@@ -317,8 +318,8 @@ interface OfferListingReqBody {
 const offerListing = async (req: PrivateRequest, res: Response) => {
   const { pid } = req.params;
   const { offer }: OfferListingReqBody = req.body;
-  const uid = req.uid;
-  const username = req.username;
+  const senderUid = req.uid;
+  const sender = req.username;
 
   try {
     const q1 = "SELECT * FROM listings where pid = $1";
@@ -329,19 +330,65 @@ const offerListing = async (req: PrivateRequest, res: Response) => {
 
     if (!listing) throw new Error("Listing does not exist");
 
-    if (listing.uid === uid) throw new Error("Offer not authorised");
+    if (listing.uid === senderUid) throw new Error("Offer not authorised");
 
     let offers = listing.offers;
 
     // check if user already made an offer
-    const index = offers.findIndex((offer: string) => offer.includes(uid!));
-    if (index === -1) offers.push(`${uid}/${username}/${offer}`);
-    else offers[index] = `${uid}/${username}/${offer}`;
+    const index = offers.findIndex((offer: string) =>
+      offer.includes(senderUid!)
+    );
+    if (index === -1) {
+      offers.push(`${senderUid}/${sender}/${offer}`);
 
-    const q2 = "UPDATE listings SET offers = $1 WHERE pid = $2 RETURNING *";
-    const v2 = [offers, pid];
+      // send notification
 
-    result = await pool.query(q2, v2);
+      const title = listing.title;
+      const receiverUid = listing.uid;
+      const receiver = listing.username;
+
+      const nid = uuidv4();
+
+      const q2 =
+        "INSERT INTO notifications (nid, pid, title, senderUid, sender, receiverUid, receiver, type, unread, created) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, TRUE, CURRENT_TIMESTAMP)";
+      const v2 = [
+        nid,
+        pid,
+        title,
+        senderUid,
+        sender,
+        receiverUid,
+        receiver,
+        "offer",
+      ];
+
+      await pool.query(q2, v2);
+    } else {
+      offers[index] = `${senderUid}/${sender}/${offer}`;
+
+      // send notification
+
+      const title = listing.title;
+      const receiverUid = listing.uid;
+      const receiver = listing.username;
+
+      const result = await pool.query(
+        "SELECT nid FROM notifications WHERE pid = $1 AND senderUid = $2 AND receiverUid = $3 AND type = $4",
+        [pid, senderUid, receiverUid, "offer"]
+      );
+      const nid = result.rows[0].nid;
+
+      const q2 =
+        "UPDATE notifications SET (title, unread, created) = ($1, TRUE, CURRENT_TIMESTAMP) WHERE nid = $2";
+      const v2 = [title, nid];
+
+      await pool.query(q2, v2);
+    }
+
+    const q3 = "UPDATE listings SET offers = $1 WHERE pid = $2 RETURNING *";
+    const v3 = [offers, pid];
+
+    result = await pool.query(q3, v3);
     listing = result.rows[0];
 
     res.status(200).json(listing);

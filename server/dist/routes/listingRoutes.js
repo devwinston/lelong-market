@@ -15,5 +15,4 @@ router
     .delete(authMiddleware_1.protect, listingControllers_1.deleteListing)
     .patch(authMiddleware_1.protect, listingControllers_1.updateListing);
 router.route("/:pid/offer").patch(authMiddleware_1.protect, listingControllers_1.offerListing);
-// router.route("/:p") // @TODO pagination
 exports.default = router;
