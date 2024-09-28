@@ -1,4 +1,4 @@
-Carousell-inspired marketplace to buy and sell products.
+Carousell-inspired online marketplace to buy and sell products.
 
 - User authentication with JWT and encrypted password.
 - Route authorisation with authentication middleware.
